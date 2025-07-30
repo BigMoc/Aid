@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Script Pastebin</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .script-container { margin-bottom: 40px; }
+    .script-header { display: flex; justify-content: space-between; align-items: center; }
+    pre { background: #f4f4f4; padding: 10px; overflow-x: auto; white-space: pre-wrap; }
+    button { margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <h1>My Script Pastebin</h1>
+
+  <div class="script-container" id="MinionD">
+    <div class="script-header">
+      <h2>MinionD.JS</h2>
+      <div>
+        <button onclick="copyScript('MinionD')">Copy</button>
+        <a href="/MinionD.JS" download><button>Download</button></a>
+      </div>
+    </div>
+    <pre id="MinionD-content">Loading...</pre>
+  </div>
+
+  <div class="script-container" id="ItemUse">
+    <div class="script-header">
+      <h2>ItemUse.js</h2>
+      <div>
+        <button onclick="copyScript('ItemUse')">Copy</button>
+        <a href="/ItemUse.js" download><button>Download</button></a>
+      </div>
+    </div>
+    <pre id="ItemUse-content">Loading...</pre>
+  </div>
+
+  <script>
+    async function loadScript(name, file) {
+      try {
+        const res = await fetch(file);
+        const text = await res.text();
+        document.getElementById(`${name}-content`).textContent = text;
+      } catch (e) {
+        document.getElementById(`${name}-content`).textContent = 'Failed to load script.';
+      }
+    }
+
+    function copyScript(name) {
+      const content = document.getElementById(`${name}-content`).textContent;
+      navigator.clipboard.writeText(content)
+        .then(() => alert(`Copied ${name} script to clipboard!`))
+        .catch(() => alert('Failed to copy script.'));
+    }
+
+    // Load scripts
+    loadScript('MinionD', '/MinionD.JS');
+    loadScript('ItemUse', '/ItemUse.js');
+  </script>
+</body>
+</html>
